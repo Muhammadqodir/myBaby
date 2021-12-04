@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/rootView"
     android:background="@color/colorPrimary"
     tools:context=".MainActivity">
 
@@ -57,7 +58,7 @@
         app:texts="@array/sub_titles"
         android:layout_marginTop="50dp"
         android:textStyle="bold"
-        app:timeout="1600"
+        app:timeout="1300"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
@@ -70,6 +71,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvSlogan"
         android:layout_marginTop="60dp"
+        android:id="@+id/ivBtnBG"
         android:src="@drawable/ic_circle_white"
         android:layout_height="230dp"/>
     <LinearLayout
@@ -77,6 +79,8 @@
         android:background="@drawable/btn_circle"
         android:clickable="true"
         android:id="@+id/btnRecode"
+        android:elevation="999dp"
+        android:translationZ="999dp"
         android:orientation="vertical"
         android:gravity="center"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -92,9 +96,11 @@
 
     </LinearLayout>
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_marginTop="50dp"
+        android:id="@+id/clHistory"
         app:layout_constraintTop_toBottomOf="@id/btnRecode"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
