@@ -21,6 +21,30 @@
         android:textSize="24dp"
         android:layout_height="wrap_content"/>
 
+    <ImageView
+        android:layout_width="42dp"
+        android:src="@drawable/ic_icons8_settings_2"
+        android:padding="4dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@drawable/btn_primary"
+        android:clickable="true"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="6dp"
+        android:layout_marginLeft="12dp"
+        android:layout_height="42dp"/>
+
+    <ImageView
+        android:layout_width="42dp"
+        android:src="@drawable/ic_icons8_buy_upgrade"
+        android:padding="4dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:background="@drawable/btn_primary"
+        android:clickable="true"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="6dp"
+        android:layout_marginLeft="12dp"
+        android:layout_height="42dp"/>
+
     <com.hanks.htextview.HTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -59,17 +83,9 @@
         android:layout_height="200dp">
 
         <ImageView
-            android:layout_width="80dp"
+            android:layout_width="120dp"
             android:src="@drawable/ic_icon"
-            android:layout_height="80dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:text="Tap to recode"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:layout_height="wrap_content"/>
+            android:layout_height="120dp"/>
 
     </LinearLayout>
 
