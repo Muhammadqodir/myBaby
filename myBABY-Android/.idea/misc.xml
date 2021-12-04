@@ -3,12 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/btn_circle.xml" value="0.2212962962962963" />
         <entry key="app/src/main/res/drawable/btn_primary.xml" value="0.18385416666666668" />
         <entry key="app/src/main/res/drawable/btn_white.xml" value="0.18385416666666668" />
+        <entry key="app/src/main/res/drawable/btn_white_transparent.xml" value="0.18385416666666668" />
         <entry key="app/src/main/res/drawable/ic_circle.xml" value="0.2212962962962963" />
         <entry key="app/src/main/res/drawable/ic_circle_outline.xml" value="0.2212962962962963" />
         <entry key="app/src/main/res/drawable/ic_circle_white.xml" value="0.18385416666666668" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.165" />
+        <entry key="app/src/main/res/drawable/ic_eat.xml" value="0.18385416666666668" />
+        <entry key="app/src/main/res/drawable/ic_hungry.xml" value="0.18385416666666668" />
+        <entry key="app/src/main/res/drawable/ic_icon_edited.xml" value="0.18385416666666668" />
+        <entry key="app/src/main/res/drawable/ic_icons8_sleep.xml" value="0.18385416666666668" />
+        <entry key="app/src/main/res/drawable/ic_tired.xml" value="0.18385416666666668" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.18385416666666668" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.18385416666666668" />
       </map>

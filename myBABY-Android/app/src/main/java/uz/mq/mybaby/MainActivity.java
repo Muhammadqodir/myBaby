@@ -10,12 +10,9 @@ import android.os.SystemClock;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.hanks.htextview.HTextView;
-import com.hanks.htextview.HTextViewType;
 
 public class MainActivity extends AppCompatActivity {
 
-    HTextView hTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,29 +29,25 @@ public class MainActivity extends AppCompatActivity {
             scaleDown.setRepeatMode(ObjectAnimator.REVERSE);
 
             scaleDown.start();
-            hTextView = (HTextView) findViewById(R.id.tvSlogan);
-            hTextView.setAnimateType(HTextViewType.EVAPORATE);
-            hTextView.animateText(texts[1]);
-            changeText(0);
         });
     }
 
-    String[] texts = {
-            "Translate your baby's cry",
-            "Tap to recode"
-    };
-    void changeText(int textId){
-        new Thread(()->{
-            SystemClock.sleep(5000);
-            runOnUiThread(()->{
-                hTextView.setAnimateType(HTextViewType.EVAPORATE);
-                hTextView.animateText(texts[textId]);
-                if (textId == 0){
-                    changeText(1);
-                }else{
-                    changeText(0);
-                }
-            });
-        }).start();
-    }
+//    String[] texts = {
+//            "Translate your baby's cry",
+//            "Tap to recode"
+//    };
+//    void changeText(int textId){
+//        new Thread(()->{
+//            SystemClock.sleep(5000);
+//            runOnUiThread(()->{
+//                hTextView.setAnimateType(HTextViewType.EVAPORATE);
+//                hTextView.animateText(texts[textId]);
+//                if (textId == 0){
+//                    changeText(1);
+//                }else{
+//                    changeText(0);
+//                }
+//            });
+//        }).start();
+//    }
 }
