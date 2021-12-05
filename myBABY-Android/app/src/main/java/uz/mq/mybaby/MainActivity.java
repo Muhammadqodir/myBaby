@@ -41,6 +41,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     ConstraintLayout rootView;
     private MediaRecorder mRecorder;
     private MediaPlayer mPlayer;
+    FirebaseDatabase database;
     StorageReference storageRef = FirebaseStorage.getInstance().getReference();
     public static final int REQUEST_AUDIO_PERMISSION_CODE = 1;
     @Override
@@ -74,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
         context = this;
+        database = FirebaseDatabase.getInstance();
         getWindow().getDecorView().post(() -> {
             ObjectAnimator scaleDown = ObjectAnimator.ofPropertyValuesHolder(
                     ((LinearLayout) findViewById(R.id.btnRecode)),
@@ -138,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
             mRecorder.start();
             startParticleEffect();
             new Thread(() -> {
-                SystemClock.sleep(8000);
+                SystemClock.sleep(7000);
                 mRecorder.stop();
                 mRecorder.release();
                 mRecorder = null;
@@ -146,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(()->{
                     File mFile = new File(mFileName);
                     if (mFile != null && mFile.exists()) {
-                        uploadFile(mFile);
+                        uploadFile(mFile, mFileName);
                     }else {
                         Toast.makeText(context, "File does not exist", Toast.LENGTH_LONG).show();
                     }
@@ -160,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void uploadFile(File file){
+    private void uploadFile(File file, String mFileName){
         InputStream stream = null;
         try {
             stream = new FileInputStream(file);
@@ -171,7 +175,8 @@ public class MainActivity extends AppCompatActivity {
         if(stream != null){
 
             // Create a reference to "file"
-            storageRef = storageRef.child(Utils.randomString(12)+".3gp");
+            String fileName = Utils.randomString(12)+".3gp";
+            storageRef = storageRef.child(fileName);
 
             UploadTask uploadTask = storageRef.putStream(stream);
             uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -182,6 +187,9 @@ public class MainActivity extends AppCompatActivity {
             }).addOnSuccessListener(new OnSuccessListener() {
                 @Override
                 public void onSuccess(Object o) {
+                    DatabaseReference myRef = database.getReference("requests");
+                    String key = myRef.push().getKey();
+                    myRef.child(key).setValue(new Request("recognize", fileName));
                     Toast.makeText(context, "Uploaded Successfully", Toast.LENGTH_LONG).show();
                 }
             });
