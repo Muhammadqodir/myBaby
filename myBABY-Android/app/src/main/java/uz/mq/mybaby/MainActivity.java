@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(()->{
                     File mFile = new File(mFileName);
                     if (mFile != null && mFile.exists()) {
-                        uploadFile(mFile, mFileName);
+                        uploadFile(mFile);
                     }else {
                         Toast.makeText(context, "File does not exist", Toast.LENGTH_LONG).show();
                     }
@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void uploadFile(File file, String mFileName){
+    private void uploadFile(File file){
         InputStream stream = null;
         try {
             stream = new FileInputStream(file);
@@ -176,9 +176,9 @@ public class MainActivity extends AppCompatActivity {
 
             // Create a reference to "file"
             String fileName = Utils.randomString(12)+".3gp";
-            storageRef = storageRef.child(fileName);
+            StorageReference storageRef1 = storageRef.child(fileName);
 
-            UploadTask uploadTask = storageRef.putStream(stream);
+            UploadTask uploadTask = storageRef1.putStream(stream);
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
