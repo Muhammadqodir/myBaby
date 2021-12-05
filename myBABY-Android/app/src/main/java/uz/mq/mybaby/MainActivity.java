@@ -24,6 +24,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.AudioFormat;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
@@ -37,12 +38,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -55,11 +61,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import nl.dionsegijn.konfetti.KonfettiView;
-import nl.dionsegijn.konfetti.ParticleSystem;
-import nl.dionsegijn.konfetti.models.Shape;
-import nl.dionsegijn.konfetti.models.Size;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -98,6 +99,24 @@ public class MainActivity extends AppCompatActivity {
 
         });
     }
+
+    String[] results = {
+            "Боль в животе",
+            "Отрыжка",
+            "Холодно/Жарко",
+            "Дискомфорт",
+            "Голодный",
+            "Уставший"
+    };
+
+    int[] icons = {
+        R.drawable.ic_icons8_back_pain,
+            R.drawable.ic_icons8_error,
+            R.drawable.ic_icons8_temperature,
+            R.drawable.ic_icons8_error,
+            R.drawable.ic_hungry,
+            R.drawable.ic_tired
+    };
 
     private static String mFileName = null;
     private void startRecording() {
@@ -188,8 +207,44 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Object o) {
                     DatabaseReference myRef = database.getReference("requests");
+                    DatabaseReference responses = database.getReference("responses");
+
                     String key = myRef.push().getKey();
                     myRef.child(key).setValue(new Request("recognize", fileName));
+                    responses.child(key).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            int accurancy = -1;
+                            int predict = -1;
+
+                            for (DataSnapshot dttSnapshot2 : snapshot.getChildren()) {
+                                if (dttSnapshot2 .getKey().equals("accurancy"))
+                                    accurancy = dttSnapshot2 .getValue(Integer.class);
+                                if (dttSnapshot2 .getKey().equals("result"))
+                                    predict = dttSnapshot2 .getValue(Integer.class);
+                            }
+                            if (accurancy >= 0){
+                                BottomSheetDialog dialog = new BottomSheetDialog(context, R.style.SheetDialog);
+                                final View parentView = getLayoutInflater().inflate(R.layout.result_dialog ,null);
+                                ((ImageView)parentView.findViewById(R.id.ivIcon)).setImageResource(icons[predict]);
+                                ((TextView) parentView.findViewById(R.id.tvResult)).setText(results[predict]);
+                                ((TextView) parentView.findViewById(R.id.tvAccuracy)).setText(accurancy+" %");
+                                dialog.setContentView(parentView);
+                                dialog.show();
+                                ResponseModel model = new ResponseModel(accurancy, predict);
+                                Toast.makeText(context, model.getResult()+"("+model.getAccurancy()+")", Toast.LENGTH_LONG).show();
+                                (findViewById(R.id.tvSlogan)).animate().alpha(1).setDuration(300).start();
+                                (findViewById(R.id.clHistory)).animate().alpha(1).setDuration(300).start();
+                                (findViewById(R.id.btnRecode)).animate().setDuration(300).translationYBy(-diff).start();
+                                (findViewById(R.id.ivBtnBG)).animate().setDuration(300).translationYBy(-diff).start();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                     Toast.makeText(context, "Uploaded Successfully", Toast.LENGTH_LONG).show();
                 }
             });
@@ -232,6 +287,7 @@ public class MainActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(MainActivity.this, new String[]{RECORD_AUDIO, WRITE_EXTERNAL_STORAGE}, REQUEST_AUDIO_PERMISSION_CODE);
     }
 
+    int diff = 0;
     public void startParticleEffect(){
 
         (findViewById(R.id.tvSlogan)).animate().alpha(0).setDuration(300).start();
@@ -253,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
                 R.drawable.ic_note_2
         };
 
-        final int diff = Utils.convertPixelsToDp((height/2)-location[1], context);
+        diff = Utils.convertPixelsToDp((height/2)-location[1], context);
         (findViewById(R.id.btnRecode)).animate().setDuration(300).translationYBy(diff).start();
         (findViewById(R.id.ivBtnBG)).animate().setDuration(300).translationYBy(diff).start();
 
@@ -286,12 +342,6 @@ public class MainActivity extends AppCompatActivity {
                 SystemClock.sleep(50);
             }
             SystemClock.sleep(1000);
-            runOnUiThread(()->{
-                (findViewById(R.id.tvSlogan)).animate().alpha(1).setDuration(300).start();
-                (findViewById(R.id.clHistory)).animate().alpha(1).setDuration(300).start();
-                (findViewById(R.id.btnRecode)).animate().setDuration(300).translationYBy(-diff).start();
-                (findViewById(R.id.ivBtnBG)).animate().setDuration(300).translationYBy(-diff).start();
-            });
         }).start();
     }
 
