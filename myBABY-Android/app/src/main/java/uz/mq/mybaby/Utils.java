@@ -3,6 +3,8 @@ package uz.mq.mybaby;
 import android.content.Context;
 import android.util.DisplayMetrics;
 
+import java.security.SecureRandom;
+
 public class Utils {
     /**
      * This method converts dp unit to equivalent pixels, depending on device density.
@@ -25,4 +27,15 @@ public class Utils {
     public static int convertPixelsToDp(float px, Context context){
         return Math.round(px / ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT));
     }
+
+    static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    static SecureRandom rnd = new SecureRandom();
+
+    static String randomString(int len){
+        StringBuilder sb = new StringBuilder(len);
+        for(int i = 0; i < len; i++)
+            sb.append(AB.charAt(rnd.nextInt(AB.length())));
+        return sb.toString();
+    }
+
 }
