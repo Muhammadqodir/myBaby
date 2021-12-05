@@ -1,2 +1,2 @@
 # myBaby
-Mobile app for recognizing baby cry with AI
+Mobile app for recognizing baby cry using AI
