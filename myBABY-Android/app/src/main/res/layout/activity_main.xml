@@ -24,6 +24,7 @@
         android:layout_width="42dp"
         android:src="@drawable/ic_icons8_settings"
         android:padding="4dp"
+        android:id="@+id/btnSettings"
         app:layout_constraintRight_toRightOf="parent"
         android:background="@drawable/btn_transparent"
         android:clickable="true"

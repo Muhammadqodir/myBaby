@@ -15,6 +15,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -24,6 +25,7 @@ import android.os.SystemClock;
 import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -48,6 +50,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpCookie;
 import java.util.Random;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -71,36 +74,40 @@ public class MainActivity extends AppCompatActivity {
         tvSuggest = (TextView) findViewById(R.id.tvSuggest);
         master = new ApiMaster(this);
 //        database = FirebaseDatabase.getInstance();
-        getWindow().getDecorView().post(() -> {
+        getWindow().getDecorView().post(this::initViews);
+    }
 
-            rootView = (ConstraintLayout) findViewById(R.id.rootView);
+    private void initViews(){
+        rootView = (ConstraintLayout) findViewById(R.id.rootView);
 
-            ((LinearLayout) findViewById(R.id.btnRecode)).setOnClickListener((v)->{
-                scaleDown = ObjectAnimator.ofPropertyValuesHolder(
-                        ((LinearLayout) findViewById(R.id.btnRecode)),
-                        PropertyValuesHolder.ofFloat("scaleX", 1.1f),
-                        PropertyValuesHolder.ofFloat("scaleY", 1.1f));
-                scaleDown.setDuration(800);
+        ((LinearLayout) findViewById(R.id.btnRecode)).setOnClickListener((v)->{
+            scaleDown = ObjectAnimator.ofPropertyValuesHolder(
+                    ((LinearLayout) findViewById(R.id.btnRecode)),
+                    PropertyValuesHolder.ofFloat("scaleX", 1.1f),
+                    PropertyValuesHolder.ofFloat("scaleY", 1.1f));
+            scaleDown.setDuration(800);
 
-                scaleDown.setRepeatCount(ObjectAnimator.INFINITE);
-                scaleDown.setRepeatMode(ObjectAnimator.REVERSE);
+            scaleDown.setRepeatCount(ObjectAnimator.INFINITE);
+            scaleDown.setRepeatMode(ObjectAnimator.REVERSE);
 
-                scaleDown.start();
-                startRecording();
-            });
+            scaleDown.start();
+            startRecording();
+        });
 
-            ((ImageView) findViewById(R.id.btnCloseResult)).setOnClickListener(v -> {
-                llResult.animate().scaleY(0.5f).alpha(0).setDuration(300).start();
+        ((ImageView) findViewById(R.id.btnCloseResult)).setOnClickListener(v -> {
+            llResult.animate().scaleY(0.5f).alpha(0).setDuration(300).start();
 
-                (findViewById(R.id.btnLoading)).setVisibility(View.GONE);
-                (findViewById(R.id.ivBtnIcon)).setVisibility(View.VISIBLE);
-                (findViewById(R.id.tvSlogan)).animate().alpha(1).setDuration(300).start();
-                (findViewById(R.id.clHistory)).animate().alpha(1).setDuration(300).start();
-                (findViewById(R.id.btnRecode)).animate().setDuration(300).translationYBy(-diff).start();
-                (findViewById(R.id.ivBtnBG)).animate().setDuration(300).translationYBy(-diff).start();
+            (findViewById(R.id.btnLoading)).setVisibility(View.GONE);
+            (findViewById(R.id.ivBtnIcon)).setVisibility(View.VISIBLE);
+            (findViewById(R.id.tvSlogan)).animate().alpha(1).setDuration(300).start();
+            (findViewById(R.id.clHistory)).animate().alpha(1).setDuration(300).start();
+            (findViewById(R.id.btnRecode)).animate().setDuration(300).translationYBy(-diff).start();
+            (findViewById(R.id.ivBtnBG)).animate().setDuration(300).translationYBy(-diff).start();
 
-            });
+        });
 
+        ((ImageView) findViewById(R.id.btnSettings)).setOnClickListener(v -> {
+            startActivity(new Intent(this, SettingsActivity.class));
         });
     }
 
@@ -130,8 +137,6 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.ic_hungry,
             R.drawable.ic_icons8_sleep
     };
-
-
 
     private static final String LOG_TAG = "AudioRecordTest";
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
