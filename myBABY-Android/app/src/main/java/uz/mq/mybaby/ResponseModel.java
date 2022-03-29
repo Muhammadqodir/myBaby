@@ -1,15 +1,15 @@
 package uz.mq.mybaby;
 
 public class ResponseModel {
-    int accurancy;
+    int accuracy;
     int result;
 
-    public int getAccurancy() {
-        return accurancy;
+    public int getAccuracy() {
+        return accuracy;
     }
 
-    public void setAccurancy(int accurancy) {
-        this.accurancy = accurancy;
+    public void setAccuracy(int accuracy) {
+        this.accuracy = accuracy;
     }
 
     public int getResult() {
@@ -20,11 +20,8 @@ public class ResponseModel {
         this.result = result;
     }
 
-    public ResponseModel(int accurancy, int result) {
-        this.accurancy = accurancy;
+    public ResponseModel(int accuracy, int result) {
+        this.accuracy = accuracy;
         this.result = result;
-    }
-
-    public ResponseModel() {
     }
 }

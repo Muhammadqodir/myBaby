@@ -5,33 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/rootView"
-    android:background="@color/colorPrimary"
+    android:background="@drawable/background"
     tools:context=".MainActivity">
 
     <TextView
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/app_name"
         android:textColor="@color/white"
+        android:textSize="38dp"
         android:id="@+id/tvTitle"
-        android:textStyle="bold"
-        android:fontFamily="@font/font_n"
-        android:layout_marginTop="12dp"
+        android:fontFamily="@font/title_font"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textSize="24dp"
-        android:layout_height="wrap_content"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:layout_width="42dp"
         android:src="@drawable/ic_icons8_settings"
         android:padding="4dp"
         app:layout_constraintRight_toRightOf="parent"
-        android:background="@drawable/btn_primary"
+        android:background="@drawable/btn_transparent"
         android:clickable="true"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="6dp"
-        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
         android:layout_height="42dp"/>
 
     <ImageView
@@ -39,7 +37,7 @@
         android:src="@drawable/ic_icons8_buy_upgrade_2"
         android:padding="4dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:background="@drawable/btn_primary"
+        android:background="@drawable/btn_transparent"
         android:clickable="true"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="6dp"
@@ -71,6 +69,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvSlogan"
         android:layout_marginTop="60dp"
+        android:alpha=".3"
         android:id="@+id/ivBtnBG"
         android:src="@drawable/ic_circle_white"
         android:layout_height="230dp"/>
@@ -82,6 +81,7 @@
         android:elevation="999dp"
         android:translationZ="999dp"
         android:orientation="vertical"
+        android:animateLayoutChanges="true"
         android:gravity="center"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -89,13 +89,132 @@
         android:layout_marginTop="75dp"
         android:layout_height="200dp">
 
+        <com.tuyenmonkey.mkloader.MKLoader
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:id="@+id/btnLoading"
+            app:mk_type="TwinFishesSpinner"
+            android:visibility="gone"
+            app:mk_color="@color/colorPrimary"
+            />
+
         <ImageView
             android:layout_width="120dp"
-            android:src="@drawable/ic_icon_edited"
+            android:src="@drawable/icon_color"
+            android:id="@+id/ivBtnIcon"
             android:layout_height="120dp"/>
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/llResult"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:translationZ="9999dp"
+        android:layout_margin="12dp"
+        android:alpha="0"
+        android:scaleX="0"
+        android:scaleY="0"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/roud_rect"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/roud_rect"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:id="@+id/ivIcon"
+                android:padding="12dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:background="@drawable/ic_circle_white"
+                android:layout_height="80dp"
+                android:src="@drawable/ic_hungry"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/ivIcon"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Голодный"
+                    android:textSize="24dp"
+                    android:textStyle="bold"
+                    android:id="@+id/tvResult"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginTop="8dp"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="84%"
+                    android:textSize="20dp"
+                    android:id="@+id/tvAccuracy"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="60dp"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/ic_icons8_close"
+                android:layout_marginRight="12dp"
+                android:padding="12dp"
+                android:translationZ="99999dp"
+                android:id="@+id/btnCloseResult"
+                android:clickable="true"
+                android:background="@drawable/btn_white_transparent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="60dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text=""
+            android:textSize="16dp"
+            android:gravity="left"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="12dp"
+            android:id="@+id/tvSuggest"
+            android:textColor="#c444"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="Website"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:paddingLeft="24dp"
+            android:background="@drawable/btn_white"
+            android:clickable="true"
+            android:paddingRight="24dp"
+            android:drawableLeft="@drawable/ic_icons8_link_1"
+            android:layout_marginBottom="12dp"
+            android:id="@+id/tvLink"
+            android:drawablePadding="8dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:layout_height="40dp"/>
+
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -111,7 +230,7 @@
             android:textSize="20dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:text="История:"
+            android:text="History:"
             android:textColor="@color/white"
             android:layout_marginLeft="12dp"
             android:layout_marginTop="14dp"
@@ -121,13 +240,13 @@
             android:textSize="18dp"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:text="Все"
+            android:text="All"
             android:clickable="true"
             android:textStyle="bold"
             android:gravity="center"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
-            android:background="@drawable/btn_primary"
+            android:background="@drawable/btn_transparent"
             android:id="@+id/btnMoreHistory"
             android:textColor="@color/colorTextWhiteAlpha"
             android:layout_marginTop="8dp"
@@ -158,7 +277,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:drawableLeft="@drawable/ic_icons8_sleep"
-                        android:text="Хочу спать"
+                        android:text="Wants to sleep"
                         android:textColor="#444"
                         android:textSize="18dp"
                         app:layout_constraintTop_toTopOf="parent"
@@ -185,8 +304,9 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <TextView
                     android:layout_width="wrap_content"
-                    android:text="04.12.2021 12:43"
+                    android:text="11.03.2022 12:43"
                     android:textSize="14dp"
+                    android:textColor="#c444"
                     android:layout_marginRight="18dp"
                     android:layout_height="wrap_content"/>
 
@@ -208,7 +328,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:drawableLeft="@drawable/ic_eat"
-                        android:text="Голодный"
+                        android:text="Hungry"
                         android:textColor="#444"
                         android:textSize="18dp"
                         app:layout_constraintTop_toTopOf="parent"
@@ -235,8 +355,9 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <TextView
                     android:layout_width="wrap_content"
-                    android:text="04.12.2021 12:40"
+                    android:text="10.03.2022 12:40"
                     android:textSize="14dp"
+                    android:textColor="#c444"
                     android:layout_marginRight="18dp"
                     android:layout_height="wrap_content"/>
 
@@ -258,7 +379,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:drawableLeft="@drawable/ic_tired"
-                        android:text="Устал"
+                        android:text="Belly pain"
                         android:textColor="#444"
                         android:textSize="18dp"
                         app:layout_constraintTop_toTopOf="parent"
@@ -285,8 +406,9 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <TextView
                     android:layout_width="wrap_content"
-                    android:text="04.12.2021 10:32"
+                    android:text="09.03.2022 10:32"
                     android:textSize="14dp"
+                    android:textColor="#c444"
                     android:layout_marginRight="18dp"
                     android:layout_height="wrap_content"/>
 
@@ -294,5 +416,6 @@
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

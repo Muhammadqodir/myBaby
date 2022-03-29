@@ -1,7 +1,15 @@
 <resources>
     <string name="app_name">myBABY</string>
     <string-array name="sub_titles">
-        <item>Нажмите чтобы начать</item>
-        <item>Переведите плач вашего малыша!</item>
+        <item>Tap to start</item>
+        <item>Translate your baby\'s cry!</item>
+    </string-array>
+    
+    <string-array name="ages">
+        <item>0 to 4 weeks old</item>
+        <item>4 to 8 weeks old</item>
+        <item>2 to 6 months old</item>
+        <item>7 month to 2 years old</item>
+        <item>more than 2 years old</item>
     </string-array>
 </resources>
