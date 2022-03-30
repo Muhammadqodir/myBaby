@@ -62,8 +62,8 @@ public class ApiMaster {
                 JSONObject result = new JSONObject(response_content);
                 Result result1 = new Result(result.getBoolean("isSuccess"),
                         result.getString("message"),
-                        result.getInt("result"),
                         result.getInt("accuracy"),
+                        result.getInt("result"),
                         result.getString("ad_text"),
                         result.getString("ad_web"));
                 String currentDate = new SimpleDateFormat("dd.MM,yyyy HH:mm", Locale.getDefault()).format(new Date());

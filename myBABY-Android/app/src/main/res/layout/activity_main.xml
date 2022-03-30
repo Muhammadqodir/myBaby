@@ -265,6 +265,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:clickable="true"
+                android:id="@+id/last0"
+                android:visibility="visible"
                 android:layout_marginTop="4dp"
                 android:gravity="center_vertical|end"
                 android:orientation="vertical"
@@ -280,6 +282,7 @@
                         android:drawableLeft="@drawable/ic_icons8_sleep"
                         android:text="Wants to sleep"
                         android:textColor="#444"
+                        android:id="@+id/last0_res"
                         android:textSize="18dp"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -293,6 +296,7 @@
                         android:layout_width="wrap_content"
                         android:text="80%"
                         android:textColor="#444"
+                        android:id="@+id/last0_acc"
                         android:textSize="18dp"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -307,6 +311,7 @@
                     android:layout_width="wrap_content"
                     android:text="11.03.2022 12:43"
                     android:textSize="14dp"
+                    android:id="@+id/last0_date"
                     android:textColor="#c444"
                     android:layout_marginRight="18dp"
                     android:layout_height="wrap_content"/>
@@ -316,6 +321,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:clickable="true"
+                android:visibility="gone"
+                android:id="@+id/last1"
                 android:layout_marginTop="12dp"
                 android:gravity="center_vertical|end"
                 android:orientation="vertical"
@@ -331,6 +338,7 @@
                         android:drawableLeft="@drawable/ic_eat"
                         android:text="Hungry"
                         android:textColor="#444"
+                        android:id="@+id/last1_res"
                         android:textSize="18dp"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -344,6 +352,7 @@
                         android:layout_width="wrap_content"
                         android:text="86%"
                         android:textColor="#444"
+                        android:id="@+id/last1_acc"
                         android:textSize="18dp"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -358,6 +367,7 @@
                     android:layout_width="wrap_content"
                     android:text="10.03.2022 12:40"
                     android:textSize="14dp"
+                    android:id="@+id/last1_date"
                     android:textColor="#c444"
                     android:layout_marginRight="18dp"
                     android:layout_height="wrap_content"/>
@@ -367,6 +377,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:clickable="true"
+                android:id="@+id/last2"
+                android:visibility="gone"
                 android:layout_marginTop="12dp"
                 android:gravity="center_vertical|end"
                 android:orientation="vertical"
@@ -383,6 +395,7 @@
                         android:text="Belly pain"
                         android:textColor="#444"
                         android:textSize="18dp"
+                        android:id="@+id/last2_res"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -396,6 +409,7 @@
                         android:text="72%"
                         android:textColor="#444"
                         android:textSize="18dp"
+                        android:id="@+id/last2_acc"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
@@ -410,6 +424,7 @@
                     android:text="09.03.2022 10:32"
                     android:textSize="14dp"
                     android:textColor="#c444"
+                    android:id="@+id/last2_date"
                     android:layout_marginRight="18dp"
                     android:layout_height="wrap_content"/>
 

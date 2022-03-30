@@ -42,6 +42,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.tuyenmonkey.mkloader.model.Line;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -49,6 +50,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpCookie;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Set;
 
@@ -109,6 +111,41 @@ public class MainActivity extends AppCompatActivity {
         ((ImageView) findViewById(R.id.btnSettings)).setOnClickListener(v -> {
             startActivity(new Intent(this, SettingsActivity.class));
         });
+        fillHistory();
+    }
+
+    private void fillHistory(){
+        ArrayList<HistoryModel> items = Utils.getHistory(context);
+
+        if (items.size() > 0){
+            ((ConstraintLayout) findViewById(R.id.clHistory)).setVisibility(View.VISIBLE);
+            if (items.size() >= 1){
+                HistoryModel model = items.get(0);
+                ((LinearLayout) findViewById(R.id.last0)).setVisibility(View.VISIBLE);
+                ((TextView) findViewById(R.id.last0_res)).setText(results[model.getResult().getResult()]);
+                ((TextView) findViewById(R.id.last0_res)).setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(icons[model.getResult().getResult()]), null, null, null);
+                ((TextView) findViewById(R.id.last0_acc)).setText(model.getResult().getAccuracy()+"%");
+                ((TextView) findViewById(R.id.last0_date)).setText(model.getDate());
+            }
+            if (items.size() >= 2){
+                HistoryModel model = items.get(1);
+                ((LinearLayout) findViewById(R.id.last1)).setVisibility(View.VISIBLE);
+                ((TextView) findViewById(R.id.last1_res)).setText(results[model.getResult().getResult()]);
+                ((TextView) findViewById(R.id.last1_res)).setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(icons[model.getResult().getResult()]), null, null, null);
+                ((TextView) findViewById(R.id.last1_acc)).setText(model.getResult().getAccuracy()+"%");
+                ((TextView) findViewById(R.id.last1_date)).setText(model.getDate());
+            }
+            if (items.size() >= 3){
+                HistoryModel model = items.get(2);
+                ((LinearLayout) findViewById(R.id.last2)).setVisibility(View.VISIBLE);
+                ((TextView) findViewById(R.id.last2_res)).setText(results[model.getResult().getResult()]);
+                ((TextView) findViewById(R.id.last2_res)).setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(icons[model.getResult().getResult()]), null, null, null);
+                ((TextView) findViewById(R.id.last2_acc)).setText(model.getResult().getAccuracy()+"%");
+                ((TextView) findViewById(R.id.last2_date)).setText(model.getDate());
+            }
+        }else{
+            ((ConstraintLayout) findViewById(R.id.clHistory)).setVisibility(View.GONE);
+        }
     }
 
     String[] results = {
