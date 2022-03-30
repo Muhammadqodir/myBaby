@@ -26,6 +26,7 @@ import android.os.SystemClock;
 import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -80,21 +81,25 @@ public class MainActivity extends AppCompatActivity {
         getWindow().getDecorView().post(this::initViews);
     }
 
+    boolean working = false;
     private void initViews(){
         rootView = (ConstraintLayout) findViewById(R.id.rootView);
 
         ((LinearLayout) findViewById(R.id.btnRecode)).setOnClickListener((v)->{
-            scaleDown = ObjectAnimator.ofPropertyValuesHolder(
-                    ((LinearLayout) findViewById(R.id.btnRecode)),
-                    PropertyValuesHolder.ofFloat("scaleX", 1.1f),
-                    PropertyValuesHolder.ofFloat("scaleY", 1.1f));
-            scaleDown.setDuration(800);
+            if (!working){
+                working = true;
+                scaleDown = ObjectAnimator.ofPropertyValuesHolder(
+                        ((LinearLayout) findViewById(R.id.btnRecode)),
+                        PropertyValuesHolder.ofFloat("scaleX", 1.1f),
+                        PropertyValuesHolder.ofFloat("scaleY", 1.1f));
+                scaleDown.setDuration(800);
 
-            scaleDown.setRepeatCount(ObjectAnimator.INFINITE);
-            scaleDown.setRepeatMode(ObjectAnimator.REVERSE);
+                scaleDown.setRepeatCount(ObjectAnimator.INFINITE);
+                scaleDown.setRepeatMode(ObjectAnimator.REVERSE);
 
-            scaleDown.start();
-            startRecording();
+                scaleDown.start();
+                startRecording();
+            }
         });
 
         ((ImageView) findViewById(R.id.btnCloseResult)).setOnClickListener(v -> {
@@ -104,8 +109,12 @@ public class MainActivity extends AppCompatActivity {
             (findViewById(R.id.ivBtnIcon)).setVisibility(View.VISIBLE);
             (findViewById(R.id.tvSlogan)).animate().alpha(1).setDuration(300).start();
             (findViewById(R.id.clHistory)).animate().alpha(1).setDuration(300).start();
-            (findViewById(R.id.btnRecode)).animate().setDuration(300).translationYBy(-diff).start();
-            (findViewById(R.id.ivBtnBG)).animate().setDuration(300).translationYBy(-diff).start();
+            (findViewById(R.id.btnRecode)).animate().setDuration(300).alpha(1).translationYBy(-diff).start();
+            (findViewById(R.id.ivBtnBG)).animate().setDuration(300).alpha(1).translationYBy(-diff).start();
+
+            v.setEnabled(false);
+            fillHistory();
+            working = false;
 
         });
 
@@ -231,6 +240,10 @@ public class MainActivity extends AppCompatActivity {
                     });
                     ApiMaster.Result result = master.uploadAudio(mFile);
                     if (result.isSuccess){
+                        runOnUiThread(()->{
+                            (findViewById(R.id.btnRecode)).animate().setDuration(200).alpha(0).start();
+                            (findViewById(R.id.ivBtnBG)).animate().setDuration(200).alpha(0).start();
+                        });
                         if (result.getAccuracy() >= 50){
                             runOnUiThread(()->{
                                 (findViewById(R.id.btnLoading)).setVisibility(View.GONE);
@@ -238,9 +251,13 @@ public class MainActivity extends AppCompatActivity {
 
                                 ResponseModel model = new ResponseModel(result.getAccuracy(),result.getResult());
                                 ((TextView) findViewById(R.id.tvResult)).setText(results[model.getResult()]);
+                                ((TextView) findViewById(R.id.tvAccuracy)).setTextColor(getResources().getColor(R.color.colorPrimary));
                                 ((TextView) findViewById(R.id.tvAccuracy)).setText(model.getAccuracy()+"%");
+                                ((TextView) findViewById(R.id.tvSuggest)).setGravity(Gravity.LEFT);
+                                ((TextView) findViewById(R.id.tvSuggest)).setTextColor(getResources().getColor(R.color.text));
                                 ((TextView) findViewById(R.id.tvSuggest)).setText(Html.fromHtml(result.getAdvertising_text()));
                                 ((ImageView) findViewById(R.id.ivIcon)).setImageResource(icons[model.getResult()]);
+                                ((TextView) findViewById(R.id.tvLink)).setVisibility(View.VISIBLE);
                                 ((TextView) findViewById(R.id.tvLink)).setOnClickListener(v -> {
                                     String url = result.getAdvertisers_website();
                                     Intent i = new Intent(Intent.ACTION_VIEW);
@@ -249,9 +266,40 @@ public class MainActivity extends AppCompatActivity {
                                 });
                                 llResult.animate().alpha(1).scaleX(1).scaleY(1).setDuration(300).start();
                             });
+                        }else{
+                            runOnUiThread(()->{
+
+                                (findViewById(R.id.btnLoading)).setVisibility(View.GONE);
+                                (findViewById(R.id.ivBtnIcon)).setVisibility(View.VISIBLE);
+
+                                ResponseModel model = new ResponseModel(result.getAccuracy(),result.getResult());
+                                ((TextView) findViewById(R.id.tvResult)).setText(results[model.getResult()]);
+
+                                ((TextView) findViewById(R.id.tvAccuracy)).setText(model.getAccuracy()+"%");
+                                ((TextView) findViewById(R.id.tvAccuracy)).setTextColor(getResources().getColor(R.color.danger));
+                                ((TextView) findViewById(R.id.tvSuggest)).setGravity(Gravity.CENTER);
+                                ((TextView) findViewById(R.id.tvSuggest)).setTextColor(getResources().getColor(R.color.danger));
+                                ((TextView) findViewById(R.id.tvSuggest)).setText("Too low accuracy!\nWe do not recommend drawing conclusions from this result!\n" + "(There may have been some interference. Please try again)");
+                                ((ImageView) findViewById(R.id.ivIcon)).setImageResource(icons[model.getResult()]);
+                                ((TextView) findViewById(R.id.tvLink)).setVisibility(View.GONE);
+                                llResult.animate().alpha(1).scaleX(1).scaleY(1).setDuration(300).start();
+                            });
                         }
                     }else{
-                        Toast.makeText(context, result.getMessage(), Toast.LENGTH_LONG).show();
+                        runOnUiThread(()->{
+
+                            llResult.animate().scaleY(0.5f).alpha(0).setDuration(300).start();
+
+                            (findViewById(R.id.btnLoading)).setVisibility(View.GONE);
+                            (findViewById(R.id.ivBtnIcon)).setVisibility(View.VISIBLE);
+                            (findViewById(R.id.tvSlogan)).animate().alpha(1).setDuration(300).start();
+                            (findViewById(R.id.clHistory)).animate().alpha(1).setDuration(300).start();
+                            (findViewById(R.id.btnRecode)).animate().setDuration(300).translationYBy(-diff).start();
+                            (findViewById(R.id.ivBtnBG)).animate().setDuration(300).translationYBy(-diff).start();
+
+                            Toast.makeText(context, result.getMessage(), Toast.LENGTH_LONG).show();
+                            working = false;
+                        });
                     }
                 }else{
                     runOnUiThread(()->{

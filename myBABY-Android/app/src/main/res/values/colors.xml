@@ -4,4 +4,6 @@
     <color name="colorPrimary_1">#7AC2E6</color>
     <color name="white">#fff</color>
     <color name="colorTextWhiteAlpha">#ccffffff</color>
+    <color name="text">#444</color>
+    <color name="danger">#ae2012</color>
 </resources>
