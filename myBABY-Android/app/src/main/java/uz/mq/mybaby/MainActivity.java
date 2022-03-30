@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemClock;
@@ -229,6 +230,29 @@ public class MainActivity extends AppCompatActivity {
                         (findViewById(R.id.ivBtnIcon)).setVisibility(View.GONE);
                     });
                     ApiMaster.Result result = master.uploadAudio(mFile);
+                    if (result.isSuccess){
+                        if (result.getAccuracy() >= 50){
+                            runOnUiThread(()->{
+                                (findViewById(R.id.btnLoading)).setVisibility(View.GONE);
+                                (findViewById(R.id.ivBtnIcon)).setVisibility(View.VISIBLE);
+
+                                ResponseModel model = new ResponseModel(result.getAccuracy(),result.getResult());
+                                ((TextView) findViewById(R.id.tvResult)).setText(results[model.getResult()]);
+                                ((TextView) findViewById(R.id.tvAccuracy)).setText(model.getAccuracy()+"%");
+                                ((TextView) findViewById(R.id.tvSuggest)).setText(Html.fromHtml(result.getAdvertising_text()));
+                                ((ImageView) findViewById(R.id.ivIcon)).setImageResource(icons[model.getResult()]);
+                                ((TextView) findViewById(R.id.tvLink)).setOnClickListener(v -> {
+                                    String url = result.getAdvertisers_website();
+                                    Intent i = new Intent(Intent.ACTION_VIEW);
+                                    i.setData(Uri.parse(url));
+                                    startActivity(i);
+                                });
+                                llResult.animate().alpha(1).scaleX(1).scaleY(1).setDuration(300).start();
+                            });
+                        }
+                    }else{
+                        Toast.makeText(context, result.getMessage(), Toast.LENGTH_LONG).show();
+                    }
                 }else{
                     runOnUiThread(()->{
                         Log.e("FileName", fileName);
