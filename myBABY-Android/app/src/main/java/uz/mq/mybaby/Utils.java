@@ -56,8 +56,8 @@ public class Utils {
         return new BabyProfile(preferences.getInt("age", 0), preferences.getInt("sex", 0));
     }
 
-    static void addToHistory(Context ctx, ApiMaster.Result item){
-        ArrayList<ApiMaster.Result> historyModels;
+    static void addToHistory(Context ctx, HistoryModel item){
+        ArrayList<HistoryModel> historyModels;
         Gson gson = new Gson();
         SharedPreferences sharedPreference = ctx.getSharedPreferences("History", Context.MODE_PRIVATE);
         String cash_str = sharedPreference.getString("History", "empty");
@@ -65,20 +65,20 @@ public class Utils {
             historyModels = new ArrayList<>();
             historyModels.add(item);
         }else{
-            Type typeOfObjectsList = new TypeToken<ArrayList<ApiMaster.Result>>() {}.getType();
+            Type typeOfObjectsList = new TypeToken<ArrayList<HistoryModel>>() {}.getType();
             historyModels = gson.fromJson(cash_str, typeOfObjectsList);
             historyModels.add(item);
         }
         sharedPreference.edit().putString("History", gson.toJson(historyModels)).apply();
     }
 
-    public static ArrayList<ApiMaster.Result> getHistory(Context ctx){
-        ArrayList<ApiMaster.Result> historyModels = new ArrayList<>();
+    public static ArrayList<HistoryModel> getHistory(Context ctx){
+        ArrayList<HistoryModel> historyModels = new ArrayList<>();
         Gson gson = new Gson();
         SharedPreferences sharedPreference = ctx.getSharedPreferences("History", Context.MODE_PRIVATE);
         String cash_str = sharedPreference.getString("History", "empty");
         if (!cash_str.equals("empty")){
-            Type typeOfObjectsList = new TypeToken<ArrayList<ApiMaster.Result>>() {}.getType();
+            Type typeOfObjectsList = new TypeToken<ArrayList<HistoryModel>>() {}.getType();
             historyModels = gson.fromJson(cash_str, typeOfObjectsList);
             Collections.reverse(historyModels);
             return historyModels;

@@ -8,6 +8,9 @@ import org.json.JSONObject;
 
 import java.io.Console;
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import okhttp3.FormBody;
 import okhttp3.MediaType;
@@ -55,17 +58,17 @@ public class ApiMaster {
                 Log.e("RespnseContent", "content");
                 String response_content = response.body().string();
 
-                Log.e("RespnseContent", "start");
                 Log.e("RespnseContent", response_content);
-                Log.e("RespnseContent", "end");
-                return null;
-//                JSONObject result = new JSONObject(response_content);
-//                return new Result(result.getBoolean("isSuccess"),
-//                        result.getString("message"),
-//                        result.getInt("result"),
-//                        result.getInt("accuracy"),
-//                        result.getString("ad_text"),
-//                        result.getString("ad_web"));
+                JSONObject result = new JSONObject(response_content);
+                Result result1 = new Result(result.getBoolean("isSuccess"),
+                        result.getString("message"),
+                        result.getInt("result"),
+                        result.getInt("accuracy"),
+                        result.getString("ad_text"),
+                        result.getString("ad_web"));
+                String currentDate = new SimpleDateFormat("dd.MM,yyyy HH:mm", Locale.getDefault()).format(new Date());
+                Utils.addToHistory(context, new HistoryModel(currentDate, result.getString("key"), result1));
+                return result1;
             }else{
                 Log.e("RespnseContent", "failed");
                 return null;
